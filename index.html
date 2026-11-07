@@ -67,8 +67,8 @@ section{padding:clamp(72px,10vw,128px) 0}
 .menu-open .burger span{background:transparent}
 .menu-open .burger span::before{transform:translateY(6px) rotate(45deg)}
 .menu-open .burger span::after{transform:translateY(-6px) rotate(-45deg)}
-.mnav{position:fixed;inset:0;z-index:35;background:var(--milk);padding:120px 24px 40px;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .3s}
-.mnav a{font:600 34px/1.25 var(--serif);text-decoration:none;padding:6px 0;border-bottom:1px solid var(--line)}
+.mnav{position:fixed;inset:0;z-index:35;background:var(--milk);padding:100px 24px 40px;display:flex;flex-direction:column;gap:4px;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto}
+.mnav a{font:600 30px/1.25 var(--serif);text-decoration:none;padding:6px 0;border-bottom:1px solid var(--line)}
 .menu-open .mnav{opacity:1;pointer-events:auto}
 @media (min-width:960px){.nav{display:flex}.hdr .btn{display:inline-flex}.burger,.mnav{display:none}}
 
@@ -134,7 +134,8 @@ section{padding:clamp(72px,10vw,128px) 0}
 .row .n b{display:block;font-weight:600;font-size:16px}
 .row .n small{color:var(--muted);font-size:13.5px}
 .row .p{font:600 24px/1 var(--serif);white-space:nowrap}
-.row.hot .n b::after{content:"акция месяца";margin-left:8px;font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;background:var(--nude);color:var(--rose-d);padding:4px 7px;border-radius:99px;vertical-align:2px}
+.row.hot .n b::after,.row.present .n b::after{content:"акция месяца";margin-left:8px;font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;background:var(--nude);color:var(--rose-d);padding:4px 7px;border-radius:99px;vertical-align:2px;white-space:nowrap}
+.row.present .n b::after{content:"в подарок"}
 .svc-photo{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5;background:var(--stone);display:none}
 @media (min-width:960px){.svc-photo{display:block;position:sticky;top:96px}}
 .svc-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s, transform 1.2s}
@@ -159,6 +160,31 @@ section{padding:clamp(72px,10vw,128px) 0}
 .step p{margin:0;color:#BDB2AD;font-size:14.5px}
 .pig{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;background:#2A2523}
 .pig img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.gift{display:flex;gap:16px;align-items:flex-start;margin:-8px 0 30px;padding:18px 20px;border-radius:var(--r-md);background:linear-gradient(120deg,rgba(228,203,192,.18),rgba(228,203,192,.04));border:1px solid rgba(228,203,192,.4)}
+.gift-ic{width:50px;height:50px;border-radius:14px;background:var(--nude);color:var(--ink);display:grid;place-items:center;flex:none}
+.gift-ic svg{width:26px;height:26px}
+.gift small{display:inline-block;font:700 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--nude);margin-bottom:6px}
+.gift b{display:block;font:600 24px/1.15 var(--serif);color:#fff}
+.gift div span{display:block;font-size:14px;line-height:1.5;color:#CFC5C0;margin-top:6px}
+
+/* fix (correction of old PM) */
+.fix{background:linear-gradient(180deg,#EFE2DB 0%,var(--milk) 100%)}
+.fx{display:grid;gap:40px}
+@media (min-width:960px){.fx{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:72px;align-items:center}}
+.fx-photo{position:relative;margin:0 auto;width:100%;max-width:520px;border-radius:999px 999px var(--r-lg) var(--r-lg);overflow:hidden;aspect-ratio:1;background:var(--stone);box-shadow:var(--shadow)}
+@media (max-width:959px){.fx-photo{border-radius:var(--r-lg);aspect-ratio:4/3}}
+.fx-photo img{width:100%;height:100%;object-fit:cover}
+.fx-photo figcaption{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(255,255,255,.88);font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;white-space:nowrap}
+.fx-list{list-style:none;margin:26px 0;padding:0;counter-reset:f}
+.fx-list li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:2px 14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.fx-list li:first-child{border-top:1px solid var(--line)}
+.fx-list li::before{counter-increment:f;content:counter(f,upper-roman);grid-row:span 2;font:500 italic 26px/1 var(--serif);color:var(--rose)}
+.fx-list b{font-weight:600}
+.fx-list span{color:var(--muted);font-size:14.5px}
+.fx-price{display:flex;justify-content:space-between;align-items:baseline;gap:8px 14px;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 20px;margin-bottom:22px}
+.fx-price span{font-size:14.5px;color:var(--ink-2)}
+.fx-price b{font:600 30px/1 var(--serif);white-space:nowrap}
+
 .pig figcaption{position:absolute;left:14px;bottom:14px;right:14px;background:rgba(30,27,26,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:10px 14px;border-radius:12px;font-size:13px;color:#EFE8E4}
 
 /* calculator */
@@ -193,6 +219,7 @@ section{padding:clamp(72px,10vw,128px) 0}
 .combo{display:none;background:var(--ink);color:#fff;border-radius:var(--r-md);padding:18px;font-size:14.5px}
 .combo.on{display:block;animation:fade .4s}
 .combo b{font:600 26px/1.1 var(--serif);display:block;margin-top:4px;color:var(--nude)}
+.combo .save{display:block;font-size:13px;color:#BDB2AD;margin-top:2px}
 .extra{font-size:13.5px;color:var(--muted);display:grid;gap:4px}
 
 /* gallery */
@@ -205,6 +232,36 @@ section{padding:clamp(72px,10vw,128px) 0}
 .gi span{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.88);font-size:12px;font-weight:600;padding:5px 10px;border-radius:99px}
 .gi.wide{grid-column:span 2;aspect-ratio:2/1}
 .gi.hide{display:none}
+.grid{grid-auto-flow:dense}
+.grid.filtered .gi.wide{grid-column:auto;aspect-ratio:1}
+.more-wrap{display:flex;justify-content:center;margin-top:28px}
+@media (max-width:759px){.filters{gap:6px}.filters .tab{padding:9px 13px;font-size:13.5px}}
+.more-wrap .btn[hidden]{display:none}
+
+/* team */
+.team{display:grid;gap:14px}
+@media (min-width:760px){.team{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+.mcard{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.mph{position:relative;flex:none;width:118px;background:linear-gradient(160deg,var(--nude),#F3E7E1 75%);display:grid;place-items:center}
+.mph span{font:500 italic 46px/1 var(--serif);color:var(--rose)}
+.mph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mtx{padding:18px 18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.mtx small{font:600 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}
+.mtx h3{font-size:26px}
+.mtx p{margin:0 0 6px;color:var(--ink-2);font-size:14.5px}
+.mtx .btn{margin-top:auto;align-self:flex-start}
+.mcard.empty{background:transparent;border-style:dashed;border-color:rgba(176,112,95,.45)}
+.mcard.empty .mph{background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(176,112,95,.07) 14px 15px)}
+.mcard.empty .mph span{font:300 44px/1 var(--sans);color:rgba(176,112,95,.6)}
+.mcard.empty h3{color:var(--muted)}
+@media (min-width:760px){
+  .mcard{flex-direction:column}
+  .mph{width:auto;aspect-ratio:4/5}
+  .mph span{font-size:clamp(72px,8vw,110px)}
+  .mcard.empty .mph span{font-size:72px}
+  .mtx{padding:22px 24px 26px}
+  .mtx h3{font-size:30px}
+}
 .lb{border:0;padding:0;background:transparent;max-width:min(92vw,1000px);max-height:90vh}
 .lb::backdrop{background:rgba(20,17,16,.86)}
 .lb img{max-height:84vh;width:auto;margin:auto;border-radius:16px}
@@ -288,8 +345,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
     <nav class="nav" aria-label="Основное меню">
       <a href="#services">Услуги и цены</a>
       <a href="#removal">Удаление</a>
-      <a href="#calc">Калькулятор</a>
+      <a href="#fix">Исправление</a>
       <a href="#works">Работы</a>
+      <a href="#team">Команда</a>
       <a href="#contacts">Контакты</a>
     </nav>
     <a class="btn sm rose" href="https://n727890.yclients.com" target="_blank" rel="noopener">Записаться онлайн</a>
@@ -299,9 +357,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 <nav class="mnav" aria-label="Мобильное меню">
   <a href="#services">Услуги и цены</a>
   <a href="#removal">Удаление татуажа</a>
+  <a href="#fix">Исправление перманента</a>
   <a href="#calc">Калькулятор</a>
   <a href="#works">Работы</a>
   <a href="#praise">Отзывы</a>
+  <a href="#team">Команда</a>
   <a href="#contacts">Контакты</a>
 </nav>
 
@@ -360,7 +420,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
           <div class="row"><div class="n"><b>Брови — волосковая техника</b><small>Аппаратная техника, эффект натуральных волосков</small></div><div class="p">15 000 ₽</div></div>
           <div class="row"><div class="n"><b>Губы</b><small>Топ-мастер</small></div><div class="p">15 000 ₽</div></div>
           <div class="row"><div class="n"><b>Межресничка</b><small>Топ-мастер</small></div><div class="p">12 000 ₽</div></div>
-          <div class="row"><div class="n"><b>Комплекс: брови, веки, губы</b><small>Топ-мастер Яна Тихомирова</small></div><div class="p">27 000 ₽</div></div>
+          <div class="row"><div class="n"><b>Комплекс: брови, веки, губы</b><small>Топ-мастер Яна Тихомирова</small></div><div class="p">33 600 ₽</div></div>
           <div class="row"><div class="n"><b>Коррекция бровей, межреснички или губ</b><small>Топ-мастер, за зону</small></div><div class="p">8 000 ₽</div></div>
           <div class="row"><div class="n"><b>Рефреш через 12–16 месяцев</b><small>Если перманент делали в студии</small></div><div class="p">12 000 ₽</div></div>
           <div class="row"><div class="n"><b>Коррекция перманента другого мастера</b></div><div class="p">15 000 ₽</div></div>
@@ -368,6 +428,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
         <div class="panel" id="p-rm" role="tabpanel">
           <div class="row"><div class="n"><b>Удаление некачественного перманента лазером</b></div><div class="p">3 500 ₽</div></div>
           <div class="row"><div class="n"><b>Удаление некачественного перманента ремувером</b></div><div class="p">4 500 ₽</div></div>
+          <div class="row present"><div class="n"><b>Сертификат на новый перманент</b><small>Дарим при удалении старого перманента в студии</small></div><div class="p">2&nbsp;000&nbsp;₽</div></div>
           <div class="row"><div class="n"><b>Консультация</b><small>Стоимость уточняйте при записи</small></div><div class="p">—</div></div>
         </div>
         <div class="panel" id="p-bl" role="tabpanel">
@@ -406,12 +467,38 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
         <div class="pcard"><small>Лазером</small><b>3 500 ₽</b></div>
         <div class="pcard"><small>Ремувером</small><b>4 500 ₽</b></div>
       </div>
+      <div class="gift rv d2">
+        <span class="gift-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"/></svg></span>
+        <div><small>Акция</small><b>Дарим 2&nbsp;000&nbsp;₽ на&nbsp;новый перманент</b><span>При удалении старого перманента в студии вы получаете сертификат на новую процедуру.</span></div>
+      </div>
       <a class="btn rose rv d3" href="https://n727890.yclients.com" target="_blank" rel="noopener">Записаться на удаление</a>
     </div>
     <div class="steps">
       <div class="step rv"><div><b>Консультация и фото «до»</b><p>Мастер оценивает старый перманент, объясняет, как будет уходить пигмент, и фиксирует исходное состояние.</p></div></div>
       <div class="step rv d1"><div><b>Быстрая процедура</b><p>По отзывам клиентов, сама процедура занимает около 10 минут, а ощущения терпимые.</p></div></div>
       <div class="step rv d2"><div><b>Курс и новый перманент</b><p>Для полного удаления нужен курс. После него можно сделать новый перманент — уже в студии.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FIX -->
+<section id="fix" class="fix">
+  <div class="wrap fx">
+    <figure class="fx-photo rv">
+      <img src="img/fix.jpg" alt="Брови после перманентного макияжа в студии Pm Code" loading="lazy" width="1000" height="932">
+      <figcaption>Работа студии</figcaption>
+    </figure>
+    <div>
+      <span class="eyebrow rv">Наша сильная сторона</span>
+      <h2 class="rv d1" style="margin:14px 0 20px">Исправляем <em>старый перманент</em></h2>
+      <p class="lead rv d2">По авторской методике студии. Если старая работа потеряла цвет или форму, мастер подбирает способ исправить её под ваш случай, а не по шаблону.</p>
+      <ol class="fx-list">
+        <li class="rv"><b>Разбираем старую работу</b><span>Смотрим цвет, форму и насыщенность пигмента, снимаем фото «до».</span></li>
+        <li class="rv d1"><b>Составляем план</b><span>Коррекция поверх, осветление лазером или их сочетание.</span></li>
+        <li class="rv d2"><b>Возвращаем аккуратный вид</b><span>Чистая форма и естественный оттенок, который подходит к вашей внешности.</span></li>
+      </ol>
+      <div class="fx-price rv"><span>Коррекция перманента другого мастера</span><b>15&nbsp;000&nbsp;₽</b></div>
+      <a class="btn rose rv" href="https://n727890.yclients.com" target="_blank" rel="noopener">Записаться на консультацию</a>
     </div>
   </div>
 </section>
@@ -443,7 +530,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
         <span class="lbl">Ориентировочно</span>
         <div class="total" id="total">15 000 ₽</div>
         <ul id="lines"></ul>
-        <div class="combo" id="combo">Выбраны три зоны. В прайсе есть комплекс «брови, веки, губы» у топ-мастера<b>27 000 ₽</b></div>
+        <div class="combo" id="combo">Выбраны три зоны. В прайсе есть комплекс «брови, веки, губы» у топ-мастера<b>33&nbsp;600&nbsp;₽</b><span class="save">вместо 42&nbsp;000&nbsp;₽ по отдельности</span></div>
         <div class="extra"><span>Коррекция каждой зоны — 8 000 ₽</span><span>Рефреш через 12–16 мес. — 12 000 ₽</span></div>
         <a class="btn rose" href="https://n727890.yclients.com" target="_blank" rel="noopener" style="margin-top:6px">Записаться</a>
       </div>
@@ -463,19 +550,45 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
       <button class="tab" aria-pressed="false" data-f="lips">Губы</button>
       <button class="tab" aria-pressed="false" data-f="brows">Брови</button>
       <button class="tab" aria-pressed="false" data-f="liner">Межресничка</button>
+      <button class="tab" aria-pressed="false" data-f="lam">Ламинирование и окрашивание</button>
+      <button class="tab" aria-pressed="false" data-f="rm">Удаление</button>
     </div>
     <div class="grid" id="grid">
       <button class="gi wide rv" data-c="lips"><img src="img/lips-1.jpg" alt="Перманент губ, натуральный оттенок" loading="lazy"><span>Губы</span></button>
-      <button class="gi rv d1" data-c="brows"><img src="img/brows-1.jpg" alt="Перманент бровей" loading="lazy"><span>Брови</span></button>
-      <button class="gi rv d2" data-c="liner"><img src="img/liner-1.jpg" alt="Перманент век, стрелка" loading="lazy"><span>Веки</span></button>
+      <button class="gi rv d1" data-c="brows"><img src="img/brows-5.jpg" alt="Перманент бровей, волосковая техника" loading="lazy"><span>Брови</span></button>
+      <button class="gi rv d2" data-c="lam"><img src="img/lam-1.jpg" alt="Ламинирование ресниц: до и после" loading="lazy"><span>Ламинирование</span></button>
+      <button class="gi rv" data-c="liner"><img src="img/liner-1.jpg" alt="Перманент век, стрелка" loading="lazy"><span>Межресничка</span></button>
+      <button class="gi rv d1" data-c="rm"><img src="img/rm-1.jpg" alt="Брови до и после одной процедуры лазерного удаления" loading="lazy"><span>Удаление · до/после</span></button>
+      <button class="gi rv d2" data-c="lips"><img src="img/lips-7.jpg" alt="Перманент губ, розовый оттенок" loading="lazy"><span>Губы</span></button>
+      <button class="gi wide rv" data-c="brows"><img src="img/brows-3.jpg" alt="Брови и губы после перманента" loading="lazy"><span>Брови</span></button>
+      <button class="gi rv d1" data-c="lam"><img src="img/lam-2.jpg" alt="Ламинирование ресниц" loading="lazy"><span>Ламинирование</span></button>
+      <button class="gi rv d2" data-c="liner"><img src="img/liner-4.jpg" alt="Межресничка со стрелкой" loading="lazy"><span>Межресничка</span></button>
+      <button class="gi rv" data-c="lips"><img src="img/lips-2.jpg" alt="Перманент губ" loading="lazy"><span>Губы</span></button>
+      <button class="gi rv d1" data-c="brows"><img src="img/brows-7.jpg" alt="Перманент бровей" loading="lazy"><span>Брови</span></button>
+      <button class="gi rv d2" data-c="rm"><img src="img/rm-2.jpg" alt="Старый синий перманент бровей до и после удаления" loading="lazy"><span>Удаление · до/после</span></button>
+      <button class="gi rv" data-c="lips"><img src="img/lips-5.jpg" alt="Перманент губ, насыщенный розовый" loading="lazy"><span>Губы</span></button>
+      <button class="gi rv d1" data-c="brows"><img src="img/brows-1.jpg" alt="Брови и ресницы" loading="lazy"><span>Брови</span></button>
+      <button class="gi rv" data-c="lam"><img src="img/lam-4.jpg" alt="Брови до и после окрашивания" loading="lazy"><span>Окрашивание</span></button>
+      <button class="gi rv d1" data-c="liner"><img src="img/liner-2.jpg" alt="Межресничка и брови" loading="lazy"><span>Межресничка</span></button>
+      <button class="gi wide rv d2" data-c="lips"><img src="img/lips-6.jpg" alt="Перманент губ, тёплый оттенок" loading="lazy"><span>Губы</span></button>
       <button class="gi rv" data-c="brows"><img src="img/brows-2.jpg" alt="Перманент бровей крупным планом" loading="lazy"><span>Брови</span></button>
-      <button class="gi rv d1" data-c="lips"><img src="img/lips-2.jpg" alt="Перманент губ" loading="lazy"><span>Губы</span></button>
-      <button class="gi wide rv d2" data-c="brows"><img src="img/brows-3.jpg" alt="Брови и губы после перманента" loading="lazy"><span>Брови</span></button>
-      <button class="gi rv" data-c="liner"><img src="img/liner-2.jpg" alt="Межресничка и брови" loading="lazy"><span>Межресничка</span></button>
+      <button class="gi rv d1" data-c="rm"><img src="img/rm-3.jpg" alt="Брови до и после удаления перманента" loading="lazy"><span>Удаление · до/после</span></button>
+      <button class="gi rv d2" data-c="lam"><img src="img/lam-3.jpg" alt="Ламинирование ресниц" loading="lazy"><span>Ламинирование</span></button>
+      <button class="gi rv" data-c="liner"><img src="img/liner-5.jpg" alt="Межресничка крупным планом" loading="lazy"><span>Межресничка</span></button>
       <button class="gi rv d1" data-c="lips"><img src="img/lips-3.jpg" alt="Перманент губ, розовый оттенок" loading="lazy"><span>Губы</span></button>
+      <button class="gi rv d2" data-c="brows"><img src="img/brows-6.jpg" alt="Перманент бровей" loading="lazy"><span>Брови</span></button>
+      <button class="gi rv" data-c="lam"><img src="img/lam-5.jpg" alt="Брови до и после окрашивания" loading="lazy"><span>Окрашивание</span></button>
+      <button class="gi rv d1" data-c="rm"><img src="img/rm-4.jpg" alt="Брови до и после удаления перманента" loading="lazy"><span>Удаление · до/после</span></button>
       <button class="gi rv d2" data-c="liner"><img src="img/liner-3.jpg" alt="Межресничка" loading="lazy"><span>Межресничка</span></button>
-      <button class="gi rv" data-c="lips"><img src="img/lips-4.jpg" alt="Перманент губ, насыщенный оттенок" loading="lazy"><span>Губы</span></button>
+      <button class="gi rv" data-c="lips"><img src="img/lips-8.jpg" alt="Перманент губ, нюдовый оттенок" loading="lazy"><span>Губы</span></button>
+      <button class="gi rv d1" data-c="brows"><img src="img/brows-8.jpg" alt="Брови до и после перманента" loading="lazy"><span>Брови · до/после</span></button>
+      <button class="gi rv d2" data-c="lam"><img src="img/lam-6.jpg" alt="Брови до и после окрашивания" loading="lazy"><span>Окрашивание</span></button>
+      <button class="gi rv" data-c="liner"><img src="img/liner-6.jpg" alt="Межресничка и брови" loading="lazy"><span>Межресничка</span></button>
+      <button class="gi rv d1" data-c="lips"><img src="img/lips-4.jpg" alt="Перманент губ, насыщенный оттенок" loading="lazy"><span>Губы</span></button>
+      <button class="gi rv d2" data-c="brows"><img src="img/brows-9.jpg" alt="Перманент бровей" loading="lazy"><span>Брови</span></button>
+      <button class="gi rv" data-c="rm"><img src="img/rm-5.jpg" alt="Брови до и после удаления перманента" loading="lazy"><span>Удаление · до/после</span></button>
     </div>
+    <div class="more-wrap"><button class="btn ghost" id="moreBtn" type="button">Показать ещё 19 работ</button></div>
   </div>
 </section>
 <dialog class="lb" id="lb"><button aria-label="Закрыть" id="lbClose">×</button><img id="lbImg" alt=""></dialog>
@@ -495,6 +608,35 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
     <div class="score rv">
       <a href="https://2gis.ru/spb/firm/70000001060292491" target="_blank" rel="noopener"><strong>5.0</strong><span><b>2ГИС</b>75 оценок</span></a>
       <a href="https://yandex.ru/maps/?text=Pm%20Code%20%D0%9F%D0%B0%D1%80%D1%84%D1%91%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2014" target="_blank" rel="noopener"><strong>5.0</strong><span><b>Яндекс Карты</b>133 отзыва</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow rv">Мастера</span><h2 class="rv d1" style="margin-top:14px">Наша <em>команда</em></h2></div>
+      <p class="rv d2">Фото и описания мастеров добавим из материалов студии</p>
+    </div>
+    <div class="team">
+      <article class="mcard rv">
+        <div class="mph" aria-hidden="true"><span>ЯТ</span></div>
+        <div class="mtx">
+          <small>Топ-мастер</small>
+          <h3>Яна Тихомирова</h3>
+          <p>Перманентный макияж. Делает комплекс «брови, веки, губы».</p>
+          <a class="btn sm ghost" href="https://n727890.yclients.com" target="_blank" rel="noopener">Записаться к мастеру</a>
+        </div>
+      </article>
+      <article class="mcard empty rv d1">
+        <div class="mph" aria-hidden="true"><span>+</span></div>
+        <div class="mtx"><small>Мастер студии</small><h3>Здесь будет мастер</h3><p>Фото, имя, специализация и опыт.</p></div>
+      </article>
+      <article class="mcard empty rv d2">
+        <div class="mph" aria-hidden="true"><span>+</span></div>
+        <div class="mtx"><small>Мастер студии</small><h3>Здесь будет мастер</h3><p>Фото, имя, специализация и опыт.</p></div>
+      </article>
     </div>
   </div>
 </section>
@@ -658,12 +800,30 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
   }));
   calc();
 
-  // Фильтр работ и лайтбокс
-  const items = document.querySelectorAll('.gi');
+  // Фильтр работ, «Показать ещё» и лайтбокс
+  const grid = document.getElementById('grid');
+  const items = [...grid.querySelectorAll('.gi')];
+  const moreBtn = document.getElementById('moreBtn');
+  const wideMQ = matchMedia('(min-width:760px)');
+  let filter = 'all', expanded = false;
+  const renderWorks = () => {
+    const lim = wideMQ.matches ? 14 : 8;
+    items.forEach((it, i) => {
+      const match = filter === 'all' || it.dataset.c === filter;
+      it.classList.toggle('hide', !match || (filter === 'all' && !expanded && i >= lim));
+    });
+    grid.classList.toggle('filtered', filter !== 'all');
+    const rest = items.length - lim;
+    moreBtn.hidden = filter !== 'all' || expanded || rest <= 0;
+    moreBtn.textContent = `Показать ещё ${rest} работ`;
+  };
   document.querySelectorAll('[data-f]').forEach(f => f.addEventListener('click', () => {
     document.querySelectorAll('[data-f]').forEach(x => x.setAttribute('aria-pressed', x === f));
-    items.forEach(i => i.classList.toggle('hide', f.dataset.f !== 'all' && i.dataset.c !== f.dataset.f));
+    filter = f.dataset.f; renderWorks();
   }));
+  moreBtn.addEventListener('click', () => { expanded = true; renderWorks(); });
+  wideMQ.addEventListener ? wideMQ.addEventListener('change', renderWorks) : wideMQ.addListener(renderWorks);
+  renderWorks();
   const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
   items.forEach(i => i.addEventListener('click', () => {
     const img = i.querySelector('img'); lbImg.src = img.src; lbImg.alt = img.alt;
