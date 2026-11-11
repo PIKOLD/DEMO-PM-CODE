@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Pm Code — ссылка для брелока</title>
+<meta name="theme-color" content="#1E1B1A">
+<style>
+:root{--milk:#F6F3F0;--paper:#fff;--nude:#E4CBC0;--rose:#B0705F;--ink:#1E1B1A;--muted:#756C68;--line:rgba(30,27,26,.12);--sans:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--milk);color:var(--ink);font:400 16px/1.5 var(--sans)}
+.wrap{width:min(100% - 32px,520px);margin:0 auto;padding:22px 0 40px}
+.demo{background:var(--ink);color:#EDE6E2;font-size:12px;padding:8px 16px;text-align:center}
+h1{font-size:26px;margin:6px 0 4px}
+p.sub{color:var(--muted);margin:0 0 18px;font-size:14.5px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:20px;margin:12px 0}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--milk);border-radius:99px;padding:10px 16px;font:600 15px var(--sans);cursor:pointer;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=date]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;min-height:48px;background:var(--milk)}
+.check{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:14px;color:var(--ink);font-weight:500}
+.link{word-break:break-all;font:600 14px/1.45 ui-monospace,Consolas,monospace;background:var(--milk);border-radius:12px;padding:12px;margin:0 0 12px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:99px;border:1px solid var(--ink);background:var(--ink);color:#fff;font:600 15px var(--sans);text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.rose{background:var(--rose);border-color:var(--rose)}
+.ok{font-size:13px;color:#3B7A4B;min-height:18px;margin-top:8px}
+ol{margin:0;padding-left:20px;display:grid;gap:8px;font-size:14.5px}
+ol b{font-weight:700}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+</style>
+</head>
+<body>
+<div class="demo">Демо · служебная страница мастера для записи NFC-брелоков</div>
+<div class="wrap">
+  <h1>Ссылка для брелока</h1>
+  <p class="sub">Выберите процедуру и дату — получите ссылку, которую нужно записать в брелок.</p>
+
+  <div class="card">
+    <label>Процедура</label>
+    <div class="chips">
+      <button class="chip" type="button" data-z="brows" aria-pressed="true">Брови</button>
+      <button class="chip" type="button" data-z="lips" aria-pressed="false">Губы</button>
+      <button class="chip" type="button" data-z="liner" aria-pressed="false">Межресничка</button>
+    </div>
+    <label for="d">Дата процедуры</label>
+    <input type="date" id="d">
+    <label class="check"><input type="checkbox" id="nodate"> Без даты (клиент укажет сам)</label>
+  </div>
+
+  <div class="card">
+    <label>Ссылка</label>
+    <div class="link" id="out"></div>
+    <div class="btns">
+      <button class="btn" type="button" id="copy">Скопировать</button>
+      <a class="btn ghost" id="open" href="#" target="_blank" rel="noopener">Открыть</a>
+    </div>
+    <div class="ok" id="ok" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <label>Как записать брелок (приложение NFC Tools, бесплатно)</label>
+    <ol>
+      <li>Нажмите <b>«Скопировать»</b>.</li>
+      <li>В NFC Tools: <b>Запись → Добавить запись → URL / ссылка</b>, вставьте ссылку.</li>
+      <li>Нажмите <b>«Записать»</b> и приложите брелок к телефону.</li>
+      <li>Проверьте: поднесите брелок к телефону клиентки — откроется памятка.</li>
+    </ol>
+    <p class="note">Брелок можно перезаписать, если ошиблись. Блокировать запись (Lock) не нужно — иначе его уже не обновить.</p>
+  </div>
+</div>
+<script>
+(() => {
+  const base = new URL('./', location.href).href;
+  let z = 'brows';
+  const d = document.getElementById('d'), nodate = document.getElementById('nodate');
+  const t = new Date(); d.value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+  const out = document.getElementById('out'), open = document.getElementById('open'), ok = document.getElementById('ok');
+  const make = () => {
+    const p = new URLSearchParams({ z }); if (!nodate.checked && d.value) p.set('d', d.value);
+    const url = base + '?' + p.toString();
+    out.textContent = url; open.href = url; ok.textContent = '';
+    d.disabled = nodate.checked;
+  };
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    z = c.dataset.z; document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); make();
+  }));
+  d.addEventListener('change', make); nodate.addEventListener('change', make);
+  document.getElementById('copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(out.textContent); ok.textContent = 'Скопировано — вставьте в NFC Tools'; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); ok.textContent = 'Выделено — нажмите «Копировать»'; }
+  });
+  make();
+})();
+</script>
+</body>
+</html>
