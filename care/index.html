@@ -57,6 +57,7 @@ h2{font-size:30px;margin-bottom:14px}
 .bar{height:6px;border-radius:99px;background:rgba(255,255,255,.12);margin:18px 0 8px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:var(--nude);border-radius:99px;transition:width .8s cubic-bezier(.2,.7,.2,1)}
 .bar-l{display:flex;justify-content:space-between;font-size:12px;color:#A99D97}
+.now .now-btn{margin-top:16px;width:100%;position:relative;z-index:1}
 .now.empty{background:var(--paper);color:var(--ink);border:1px dashed var(--rose)}
 .now.empty h3{color:var(--ink)}
 .now.empty p{color:var(--muted)}
@@ -151,8 +152,9 @@ footer a{color:var(--ink-2)}
     <small id="nowDay">Сегодня</small>
     <h3 id="nowTitle">Заживление</h3>
     <p id="nowText"></p>
-    <div class="bar"><i id="barFill"></i></div>
-    <div class="bar-l"><span>процедура</span><span>коррекция</span></div>
+    <a class="btn rose now-btn" id="nowBtn" href="https://n727890.yclients.com" target="_blank" rel="noopener" hidden>Записаться</a>
+    <div class="bar" id="bar"><i id="barFill"></i></div>
+    <div class="bar-l" id="barL"><span>процедура</span><span>коррекция</span></div>
   </section>
 
   <section class="card">
@@ -235,6 +237,7 @@ footer a{color:var(--ink-2)}
   const Z = {
     brows: {
       title: 'Ваши <em>брови</em>', name: 'брови',
+      refresh: 'Прошёл год: брови мягко посветлели и сохранили чистый оттенок. Чтобы вернуть насыщенность, запишитесь на рефреш.',
       stages: [
         [1, 3, 'Заживление', 'Брови выглядят ярче и темнее, чем будут. Это нормально: цвет станет мягче после шелушения.'],
         [4, 10, 'Шелушение', 'Появляется тонкая корочка. Не снимайте её — так пигмент ляжет ровно.'],
@@ -250,6 +253,7 @@ footer a{color:var(--ink-2)}
     },
     lips: {
       title: 'Ваши <em>губы</em>', name: 'губы',
+      refresh: 'Прошёл год: цвет губ стал мягче. Рефреш вернёт ему насыщенность.',
       stages: [
         [1, 3, 'Отёк и заживление', 'Губы могут быть отёчными и ярче итогового цвета. Не облизывайте их и наносите средство мастера.'],
         [4, 10, 'Шелушение', 'Тонкая плёнка сходит сама. Не снимайте её, даже если хочется.'],
@@ -266,6 +270,7 @@ footer a{color:var(--ink-2)}
     },
     liner: {
       title: 'Ваша <em>межресничка</em>', name: 'межресничка',
+      refresh: 'Прошёл год: линия стала мягче. Рефреш вернёт взгляду выразительность.',
       stages: [
         [1, 2, 'Небольшой отёк', 'Лёгкий отёк век в первые дни — нормально. Не трите глаза.'],
         [3, 10, 'Заживление', 'Не пользуйтесь тушью и не носите линзы, пока не разрешит мастер.'],
@@ -315,6 +320,9 @@ footer a{color:var(--ink-2)}
     const today = new Date(); const t0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const D = d ? toDate(d) : null;
     const day = D ? Math.round((t0 - D) / 864e5) + 1 : null;
+    const rf = !!D && day >= 1 && t0 >= addMonths(D, REFRESH[0]);   // пришло время рефреша
+    $('nowBtn').hidden = true;
+    $('barL').innerHTML = '<span>процедура</span><span>коррекция</span>';
 
     $('sub').textContent = D ? `Процедура ${fmt(D, { day: 'numeric', month: 'long', year: 'numeric' })}` : 'Укажите дату процедуры — покажем, что происходит с кожей сейчас.';
 
@@ -336,19 +344,28 @@ footer a{color:var(--ink-2)}
     } else {
       now.classList.remove('empty');
       const st = Zd.stages.find(s => day >= s[0] && (s[1] === null || day <= s[1])) || Zd.stages[Zd.stages.length - 1];
-      $('nowDay').textContent = day > 60 ? `Прошло ${day - 1} ${plural(day - 1, ['день', 'дня', 'дней'])}` : `Сегодня · день ${day}`;
-      $('nowTitle').textContent = st[2];
-      $('nowText').textContent = st[3];
-      requestAnimationFrame(() => { $('barFill').style.width = Math.min(100, day / CORR[1] * 100) + '%'; });
+      const months = (t0.getFullYear() - D.getFullYear()) * 12 + t0.getMonth() - D.getMonth() - (t0.getDate() < D.getDate() ? 1 : 0);
+      $('nowDay').textContent = months >= 12 ? (months === 12 ? 'Прошёл год' : `Прошло ${months} мес.`) : day > 60 ? `Прошло ${months} мес.` : `Сегодня · день ${day}`;
+      $('nowTitle').textContent = rf ? 'Время рефреша' : st[2];
+      $('nowText').textContent = rf ? Zd.refresh : st[3];
+      const inCorr = !rf && day >= CORR[0] && day <= CORR[1];
+      $('nowBtn').hidden = !(rf || inCorr);
+      $('nowBtn').textContent = rf ? 'Записаться на рефреш' : 'Записаться на коррекцию';
+      // шкала: до коррекции, потом — от коррекции до рефреша
+      let w, labels;
+      if (day <= CORR[1]) { w = day / CORR[1]; labels = ['процедура', 'коррекция']; }
+      else { const a = addDays(D, CORR[1]), b = addMonths(D, REFRESH[0]); w = (t0 - a) / (b - a); labels = ['коррекция', 'рефреш']; }
+      $('barL').innerHTML = labels.map(x => `<span>${x}</span>`).join('');
+      requestAnimationFrame(() => { $('barFill').style.width = Math.max(4, Math.min(100, w * 100)) + '%'; });
     }
 
     // этапы
     $('tl').innerHTML = Zd.stages.map(s => {
-      const cur = day && day >= s[0] && (s[1] === null || day <= s[1]);
-      const past = day && s[1] !== null && day > s[1];
+      const cur = day && !rf && day >= s[0] && (s[1] === null || day <= s[1]);
+      const past = day && (rf || (s[1] !== null && day > s[1]));
       const label = s[1] === null ? `с ${s[0]}-го дня` : `${s[0]}–${s[1]} день`;
       return `<li class="${cur ? 'cur' : past ? 'past' : ''}"><span class="d">${label}</span><b>${s[2]}</b><span>${s[3]}</span></li>`;
-    }).join('');
+    }).join('') + `<li class="${rf ? 'cur' : ''}"><span class="d">${REFRESH[0]}–${REFRESH[1]} мес.</span><b>Рефреш</b><span>${Zd.refresh.replace(/^Прошёл год: /, '').replace(/^./, c => c.toUpperCase())}</span></li>`;
 
     $('no').innerHTML = [...common.no, ...Zd.no].map(x => `<li>${x}</li>`).join('');
     $('yes').innerHTML = [...common.yes, ...Zd.yes].map(x => `<li>${x}</li>`).join('');
