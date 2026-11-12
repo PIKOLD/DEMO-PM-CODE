@@ -294,7 +294,10 @@ footer a{color:var(--ink-2)}
   const qs = new URLSearchParams(location.search);
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem('pmcare') || '{}'); } catch (e) {}
-  let z = Z[qs.get('z')] ? qs.get('z') : (Z[saved.z] ? saved.z : 'brows');
+  // комплекс: ?z=brows,lips,liner — на брелоке несколько зон, переключатель показывает только их
+  const zq = (qs.get('z') || '').split(',').filter(k => Z[k]);
+  let zl = zq.length >= 2 ? zq : (!zq.length && Array.isArray(saved.zl) && saved.zl.length >= 2 ? saved.zl.filter(k => Z[k]) : null);
+  let z = zq.length ? (zl && saved.z && zl.includes(saved.z) ? saved.z : zq[0]) : (Z[saved.z] && (!zl || zl.includes(saved.z)) ? saved.z : (zl ? zl[0] : 'brows'));
   let d = /^\d{4}-\d{2}-\d{2}$/.test(qs.get('d') || '') ? qs.get('d') : (saved.d || '');
 
   const $ = id => document.getElementById(id);
@@ -306,15 +309,14 @@ footer a{color:var(--ink-2)}
   const plural = (n, f) => f[(n % 10 === 1 && n % 100 !== 11) ? 0 : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 1 : 2];
 
   function save() {
-    try { localStorage.setItem('pmcare', JSON.stringify({ z, d })); } catch (e) {}
-    const p = new URLSearchParams(); p.set('z', z); if (d) p.set('d', d);
-    history.replaceState(null, '', '?' + p.toString());
+    try { localStorage.setItem('pmcare', JSON.stringify({ z, d, zl })); } catch (e) {}
+    history.replaceState(null, '', `?z=${zl ? zl.join(',') : z}${d ? '&d=' + d : ''}`);
   }
 
   function render() {
     const Zd = Z[z];
     $('title').innerHTML = Zd.title;
-    document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.z === z));
+    document.querySelectorAll('.chip').forEach(c => { c.setAttribute('aria-pressed', c.dataset.z === z); c.hidden = !!zl && !zl.includes(c.dataset.z); });
     $('dateIn').value = d;
 
     const today = new Date(); const t0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -411,6 +413,7 @@ footer a{color:var(--ink-2)}
   document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { z = c.dataset.z; save(); render(); }));
   $('dateIn').addEventListener('change', e => { d = e.target.value; save(); render(); });
 
+  if (zq.length === 1) zl = null;   // одна зона на брелоке — переключатель остаётся полным
   if (qs.get('z') || qs.get('d')) save();
   render();
 })();

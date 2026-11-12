@@ -39,7 +39,7 @@ ol b{font-weight:700}
   <p class="sub">Выберите процедуру и дату — получите ссылку, которую нужно записать в брелок.</p>
 
   <div class="card">
-    <label>Процедура</label>
+    <label>Процедура (для комплекса отметьте несколько)</label>
     <div class="chips">
       <button class="chip" type="button" data-z="brows" aria-pressed="true">Брови</button>
       <button class="chip" type="button" data-z="lips" aria-pressed="false">Губы</button>
@@ -74,18 +74,20 @@ ol b{font-weight:700}
 <script>
 (() => {
   const base = new URL('./', location.href).href;
-  let z = 'brows';
+  const chips = [...document.querySelectorAll('.chip')];
   const d = document.getElementById('d'), nodate = document.getElementById('nodate');
   const t = new Date(); d.value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
   const out = document.getElementById('out'), open = document.getElementById('open'), ok = document.getElementById('ok');
   const make = () => {
-    const p = new URLSearchParams({ z }); if (!nodate.checked && d.value) p.set('d', d.value);
-    const url = base + '?' + p.toString();
+    const zs = chips.filter(c => c.getAttribute('aria-pressed') === 'true').map(c => c.dataset.z);
+    const url = `${base}?z=${zs.join(',')}${!nodate.checked && d.value ? '&d=' + d.value : ''}`;
     out.textContent = url; open.href = url; ok.textContent = '';
     d.disabled = nodate.checked;
   };
-  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
-    z = c.dataset.z; document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); make();
+  chips.forEach(c => c.addEventListener('click', () => {
+    const on = c.getAttribute('aria-pressed') === 'true';
+    if (on && chips.filter(x => x.getAttribute('aria-pressed') === 'true').length === 1) return; // хотя бы одна зона
+    c.setAttribute('aria-pressed', !on); make();
   }));
   d.addEventListener('change', make); nodate.addEventListener('change', make);
   document.getElementById('copy').addEventListener('click', async () => {
